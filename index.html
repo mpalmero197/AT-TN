@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Alpha Team TN</title>
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-primary: #000;
+      --color-accent: #B5090B;
+      --color-bg: #fff;
+      --font-sans: 'Raleway', sans-serif;
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: var(--font-sans);
+      color: var(--color-primary);
+      background: var(--color-bg);
+      line-height:1.6;
+    }
+    .container {
+      display:flex; align-items:center; justify-content:space-between;
+      padding:1rem 2rem;
+    }
+    header {
+      position:fixed; top:0; width:100%;
+      background:rgba(255,255,255,0.95);
+      backdrop-filter:blur(5px); z-index:1000;
+      box-shadow:0 2px 5px rgba(0,0,0,0.1);
+    }
+    .logo-placeholder {
+      width:80px; height:80px;
+      background:#ddd; border:2px dashed #bbb;
+      display:flex; align-items:center; justify-content:center;
+      font-size:0.8rem; color:#666;
+    }
+    .site-title {
+      font-size:1.5rem; margin-left:1rem;
+      font-weight:700;
+    }
+    .nav-links {
+      display:flex; list-style:none; gap:1.5rem;
+    }
+    .nav-links a {
+      text-decoration:none; color:var(--color-primary);
+      font-weight:500; transition:color 0.3s;
+    }
+    .nav-links a:hover {
+      color:var(--color-accent);
+    }
+    .hamburger {
+      display:none; flex-direction:column; gap:5px; cursor:pointer;
+    }
+    .hamburger span {
+      width:25px; height:3px; background:var(--color-primary);
+      border-radius:2px; transition:all .3s;
+    }
+    .hamburger.active span:nth-child(1) {
+      transform:rotate(45deg) translate(5px,5px);
+    }
+    .hamburger.active span:nth-child(2) {
+      opacity:0;
+    }
+    .hamburger.active span:nth-child(3) {
+      transform:rotate(-45deg) translate(7px,-6px);
+    }
+    @media(max-width:768px) {
+      .nav-links {
+        position:fixed; top:0; right:-100%;
+        height:100vh; width:60%; background:var(--color-bg);
+        flex-direction:column; align-items:center; justify-content:center;
+        transition:right .3s ease;
+        box-shadow:-5px 0 15px rgba(0,0,0,0.1);
+      }
+      .nav-links.open { right:0; }
+      .hamburger { display:flex; }
+    }
+    .hero {
+      height:100vh;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      position:relative; margin-top:100px;
+      display:flex; align-items:center; justify-content:center;
+    }
+    .hero-overlay {
+      position:absolute; top:0; left:0; right:0; bottom:0;
+      background:rgba(0,0,0,0.4);
+    }
+    .hero-content {
+      position:relative; z-index:2; text-align:center; color:#fff;
+    }
+    .hero-content h2 {
+      font-size:3rem; margin-bottom:1rem; font-weight:300;
+    }
+    .btn {
+      display:inline-block; padding:.75rem 1.5rem;
+      background:var(--color-accent); color:#fff;
+      text-decoration:none; border-radius:4px;
+      font-weight:600; transition:all .3s;
+      border:none; cursor:pointer; font-size:1rem;
+    }
+    .btn:hover { 
+      filter:brightness(0.9); 
+      transform:translateY(-2px);
+    }
+    .sponsors {
+      padding:4rem 2rem; text-align:center;
+      background:#f8f9fa;
+    }
+    .sponsors h3 {
+      font-size:1.5rem; margin-bottom:2rem;
+      color:var(--color-primary);
+    }
+    .sponsor-logos {
+      display:flex; justify-content:center; gap:3rem; margin-top:1rem;
+      flex-wrap:wrap;
+    }
+    .sponsor-placeholder {
+      width:150px; height:80px;
+      background:#fff; border:2px dashed #ccc;
+      display:flex; align-items:center; justify-content:center;
+      font-size:1rem; color:#666; font-weight:500;
+      border-radius:8px; transition:all 0.3s;
+    }
+    .sponsor-placeholder:hover {
+      box-shadow:0 4px 15px rgba(0,0,0,0.1);
+      transform:translateY(-2px);
+    }
+    footer {
+      background:var(--color-primary); color:#fff;
+      text-align:center; padding:2rem; margin-top:2rem;
+    }
+    .form-container {
+      padding:6rem 1rem 2rem;
+      min-height:calc(100vh - 200px);
+    }
+    .vetting-form {
+      max-width:600px; margin:0 auto;
+      background:#fafafa; padding:2rem;
+      border-radius:8px; box-shadow:0 2px 10px rgba(0,0,0,0.05);
+    }
+    .vetting-form h2 {
+      margin-bottom:1.5rem; text-align:center;
+      color:var(--color-primary);
+    }
+    .vetting-form label, .vetting-form fieldset {
+      display:block; margin-bottom:1rem;
+    }
+    .vetting-form label {
+      font-weight:500; color:var(--color-primary);
+    }
+    .vetting-form input, .vetting-form textarea {
+      width:100%; padding:.5rem; margin-top:.5rem;
+      border:1px solid #ccc; border-radius:4px;
+      font-family:inherit; transition:border-color 0.3s;
+    }
+    .vetting-form input:focus, .vetting-form textarea:focus {
+      outline:none; border-color:var(--color-accent);
+    }
+    .vetting-form fieldset {
+      border:1px solid #ddd; padding:.75rem; border-radius:4px;
+      background:#fff;
+    }
+    .vetting-form legend { 
+      font-weight:600; padding:0 0.5rem;
+      color:var(--color-primary);
+    }
+    .vetting-form fieldset label {
+      display:inline-block; margin-right:1rem; margin-bottom:0.5rem;
+    }
+    .vetting-form input[type="radio"] {
+      width:auto; margin-right:0.5rem;
+    }
+    .vetting-form button {
+      width:100%; padding:.75rem;
+      background:var(--color-accent); color:#fff;
+      border:none; border-radius:4px; font-size:1rem;
+      cursor:pointer; margin-top:1rem; font-weight:600;
+      transition:all 0.3s;
+    }
+    .vetting-form button:hover { 
+      filter:brightness(0.9); 
+      transform:translateY(-2px);
+    }
+    .hidden { display:none; }
+    .page-content {
+      display:block;
+    }
+    .page-content.hidden {
+      display:none;
+    }
+    @media(max-width:768px) {
+      .hero-content h2 {
+        font-size:2rem;
+      }
+      .sponsor-logos {
+        flex-direction:column; align-items:center;
+      }
+      .container {
+        padding:1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="logo-placeholder">LOGO</div>
+      <h1 class="site-title">Alpha Team TN</h1>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="#" onclick="showPage('home')">Home</a></li>
+          <li><a href="#" onclick="showPage('join')">Join</a></li>
+        </ul>
+        <div class="hamburger">
+          <span></span><span></span><span></span>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <div id="home-page" class="page-content">
+    <section class="hero">
+      <div class="hero-overlay"></div>
+      <div class="hero-content">
+        <h2>Welcome to Alpha Team</h2>
+        <a href="#" onclick="showPage('join')" class="btn">Join Now</a>
+      </div>
+    </section>
+
+    <section class="sponsors">
+      <h3>Sponsored by</h3>
+      <div class="sponsor-logos">
+        <div class="sponsor-placeholder">St. Jude</div>
+        <div class="sponsor-placeholder">Helping Hands</div>
+      </div>
+    </section>
+  </div>
+
+  <div id="join-page" class="page-content hidden">
+    <main class="form-container">
+      <form id="vettingForm" class="vetting-form">
+        <h2>AT-TN Vetting Questionnaire</h2>
+        <label>TODAY'S DATE<input type="date" name="TODAYS_DATE" required></label>
+        <label>YOUR FULL NAME<input type="text" name="FULL_NAME" required></label>
+        <label>DOB<input type="date" name="DOB" required></label>
+        <label>ADDRESS<textarea name="ADDRESS" rows="2" required></textarea></label>
+        <label>OCCUPATION<input type="text" name="OCCUPATION" required></label>
+        <label>OCCUPATIONAL PRIMARY DUTIES/EXPERIENCE<textarea name="PRIMARY_DUTIES" rows="3" required></textarea></label>
+        <fieldset>
+          <legend>HAVE YOU EVER BEEN CONVICTED OF A FELONY?</legend>
+          <label><input type="radio" name="FELONY" value="Yes" required> Yes</label>
+          <label><input type="radio" name="FELONY" value="No"> No</label>
+        </fieldset>
+        <label>IF YES, PLEASE EXPLAIN<textarea name="FELONY_EXPLANATION" rows="3"></textarea></label>
+        <fieldset>
+          <legend>MARRIED?</legend>
+          <label><input type="radio" name="MARRIED" value="Yes" required> Yes</label>
+          <label><input type="radio" name="MARRIED" value="No"> No</label>
+        </fieldset>
+        <fieldset>
+          <legend>CHILDREN?</legend>
+          <label><input type="radio" name="CHILDREN_YN" value="Yes" required> Yes</label>
+          <label><input type="radio" name="CHILDREN_YN" value="No"> No</label>
+          <input type="number" name="CHILDREN_NUMBER" placeholder="If yes, how many?" min="0">
+        </fieldset>
+        <label>LEVEL OF EDUCATION COMPLETED<input type="text" name="EDUCATION" required></label>
+        <label>MILITARY SERVICE / MOS / ACTIVITY<textarea name="MILITARY_SERVICE" rows="3" required></textarea></label>
+        <fieldset>
+          <legend>ACTIVE IN ANY PATRIOT ORGANIZATION?</legend>
+          <label><input type="radio" name="ACTIVE_MEMBER" value="Yes" required> Yes</label>
+          <label><input type="radio" name="ACTIVE_MEMBER" value="No"> No</label>
+        </fieldset>
+        <label>IF YES, WHICH?<textarea name="ACTIVE_GROUPS" rows="2"></textarea></label>
+        <fieldset>
+          <legend>TRAIN & DO COMMUNITY WORK ≥2×/MO?</legend>
+          <label><input type="radio" name="TRAIN_COMMUNITY" value="Yes" required> Yes</label>
+          <label><input type="radio" name="TRAIN_COMMUNITY" value="No"> No</label>
+        </fieldset>
+        <fieldset>
+          <legend>ACCEPT & BE ACCOUNTABLE TO CHAIN OF COMMAND?</legend>
+          <label><input type="radio" name="CHAIN_COMMAND" value="Yes" required> Yes</label>
+          <label><input type="radio" name="CHAIN_COMMAND" value="No"> No</label>
+        </fieldset>
+        <label>WHY JOIN? WHAT WILL YOU BRING & EXPECT?<textarea name="MOTIVATION" rows="4" required></textarea></label>
+        <label>SIGNED<input type="text" name="SIGNATURE" required></label>
+        <label>DATE<input type="date" name="SIGN_DATE" required></label>
+        <button type="submit" class="btn">Submit</button>
+      </form>
+    </main>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 Alpha Team TN. All rights reserved.</p>
+  </footer>
+
+  <script>
+    // Mobile menu toggle
+    const hamburger = document.querySelector('.hamburger');
+    const navLinks = document.querySelector('.nav-links');
+    
+    hamburger.addEventListener('click', () => {
+      navLinks.classList.toggle('open');
+      hamburger.classList.toggle('active');
+    });
+
+    // Page navigation
+    function showPage(pageId) {
+      const pages = document.querySelectorAll('.page-content');
+      pages.forEach(page => page.classList.add('hidden'));
+      
+      const targetPage = document.getElementById(pageId + '-page');
+      if (targetPage) {
+        targetPage.classList.remove('hidden');
+      }
+      
+      // Close mobile menu if open
+      navLinks.classList.remove('open');
+      hamburger.classList.remove('active');
+    }
+
+    // Form submission
+    document.getElementById('vettingForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const formData = new FormData(this);
+      let emailBody = 'AT-TN Vetting Questionnaire Submission:\n\n';
+      
+      for (let [key, value] of formData.entries()) {
+        emailBody += `${key}: ${value}\n`;
+      }
+      
+      // Create mailto link
+      const mailtoLink = `mailto:mpalmero@protonmail.com?subject=AT-TN Vetting Questionnaire&body=${encodeURIComponent(emailBody)}`;
+      
+      // Open email client
+      window.location.href = mailtoLink;
+      
+      // Show confirmation
+      alert('Your email client should open with the filled form. Please send the email to complete your submission.');
+    });
+
+    // Set today's date as default
+    document.addEventListener('DOMContentLoaded', function() {
+      const today = new Date().toISOString().split('T')[0];
+      document.querySelector('input[name="TODAYS_DATE"]').value = today;
+      document.querySelector('input[name="SIGN_DATE"]').value = today;
+    });
+  </script>
+</body>
+</html>
